@@ -16,7 +16,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser) {
-      navigate("/");
+      navigate("/signin");
     }
   }, []);
 
@@ -28,10 +28,10 @@ const AuthProvider = ({ children }) => {
         // console.log("the user: &&", decodedToken);
         setUser(decodedToken);
       } else {
-        navigate("/");
+        navigate("/signin");
       }
     } catch (error) {
-      navigate("/");
+      navigate("/signin");
     }
   }, []);
 
