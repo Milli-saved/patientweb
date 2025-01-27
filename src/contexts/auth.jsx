@@ -18,27 +18,27 @@ const AuthProvider = ({ children }) => {
   const [userStationId, setUserStationId] = useState("");
   const [roles, setRoles] = useState("");
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
-      navigate("/signin");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (!storedUser) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const decodedToken = JSON.parse(storedUser);
-        // console.log("the user: &&", decodedToken);
-        setUser(decodedToken);
-      } else {
-        navigate("/signin");
-      }
-    } catch (error) {
-      navigate("/signin");
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     const storedUser = localStorage.getItem("user");
+  //     if (storedUser) {
+  //       const decodedToken = JSON.parse(storedUser);
+  //       // console.log("the user: &&", decodedToken);
+  //       setUser(decodedToken);
+  //     } else {
+  //       navigate("/");
+  //     }
+  //   } catch (error) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <AuthContext.Provider

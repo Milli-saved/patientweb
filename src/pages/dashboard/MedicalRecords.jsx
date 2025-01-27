@@ -43,7 +43,7 @@ const MedicalRecords = () => {
             My Medial Records
           </h1>
           {/* <button
-            // onClick={() => setCreateNewPatientModal(true)}
+          // onClick={() => setCreateNewPatientModal(true)}
             className="text-gray-900 bg-green-400 hover:bg-green-700 hover:text-white rounded-lg text-lg p-5 h-8 ms-auto inline-flex justify-center items-center"
           >
             Create New Appointment

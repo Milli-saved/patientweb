@@ -16,6 +16,7 @@ function Layout() {
           </AuthProvider>
         }
       />
+      <Route path="/" element={<HomeWeb />} />
       <Route
         path="*"
         element={
