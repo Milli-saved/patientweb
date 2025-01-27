@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { RoleBasedViews } from "../view";
 import { AuthContext } from "../../contexts/auth";
+import { Link } from "react-router-dom";
 
 const Signin = () => {
   const { setUser, setToken } = useContext(AuthContext);
@@ -162,8 +163,8 @@ const Signin = () => {
               {error}
             </Typography>
           )}
-          <Button
-            type="submit"
+          {/* <Button
+            // type="submit"
             variant="contained"
             color="primary"
             fullWidth
@@ -171,7 +172,8 @@ const Signin = () => {
             sx={{ py: 1.5 }}
           >
             {loading ? <CircularProgress size={24} /> : "Login"}
-          </Button>
+          </Button> */}
+          <Link to="/dashboard">Login</Link>
         </form>
         <Typography variant="body2" className="float-end" sx={{ mt: 3 }}>
           Need help?

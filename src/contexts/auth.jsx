@@ -7,7 +7,12 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(localStorage.getItem("user"));
+  const userDetails = {
+    name: "MillionTenkir",
+    role: "patient",
+  };
+  // const [user, setUser] = useState(localStorage.getItem("user"));
+  const [user, setUser] = useState(userDetails);
   const [token, setToken] = useState(null);
   const [station, setStation] = useState("");
   const [userStationId, setUserStationId] = useState("");
