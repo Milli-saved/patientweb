@@ -1,6 +1,174 @@
-import React from "react";
+import React, { useState } from "react";
 import { Toaster } from "sonner";
 import Table from "../../components/Table";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+} from "@mui/material";
+
+const CreateNewAppointment = ({ onClose, isOpen }) => {
+  const [appointmentData, setAppointmentData] = useState();
+
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setAppointmentData({
+      ...appointmentData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = () => {
+    console.log("submitted");
+  };
+
+  return (
+    <Dialog open={true} onClose={onClose} fullWidth maxWidth="md">
+      <DialogTitle sx={{ bgcolor: "#154C79", color: "white" }}>
+        Create New Appointment
+      </DialogTitle>
+      <DialogContent className="mt-10">
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Full Name"
+              name="fullName"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Age"
+              name="age"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Age"
+              name="age"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              // label="Full Name"
+              type="date"
+              name="fullName"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <DialogActions>
+            <Button onClick={handleSubmit} variant="contained" color="primary">
+              Create
+            </Button>
+            <Button onClick={onClose} variant="outlined" color="secondary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Grid>
+      </DialogContent>
+    </Dialog>
+  );
+};
+const UpdateAppointment = ({ onClose, isOpen, data }) => {
+  const [appointmentData, setAppointmentData] = useState(data);
+
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setAppointmentData({
+      ...appointmentData,
+      [name]: value,
+    });
+  };
+
+  const handleUpdate = () => {
+    console.log("update");
+  };
+
+  return (
+    <Dialog open={true} onClose={onClose} fullWidth maxWidth="md">
+      <DialogTitle sx={{ bgcolor: "#154C79", color: "white" }}>
+        Update Appointment
+      </DialogTitle>
+      <DialogContent className="mt-10">
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Full Name"
+              name="fullName"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Full Name"
+              name="fullName"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Full Name"
+              name="fullName"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              // label="Full Name"
+              type="date"
+              name="fullName"
+              // value={patientInfo.fullName}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <DialogActions>
+            <Button onClick={handleUpdate} variant="contained" color="primary">
+              Update
+            </Button>
+            <Button onClick={onClose} variant="outlined" color="secondary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Grid>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+const getMyAppointments = () => {
+  try {
+    const response = axios.get(
+      `${import.meta.env.VITE_API_URL}/patient/getPatient/${id}`
+    );
+    console.log("the ress: ", response.data);
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
 
 const data = [
   {
@@ -33,6 +201,28 @@ const data = [
 ];
 
 const HomePage = () => {
+  const { data: appointmentData, isLoading: appointmentDataLoading } = useQuery(
+    {
+      queryKey: ["myAppointment"],
+      queryFn: getMyAppointments,
+    }
+  );
+  const [createNewAppointment, setCreateNewAppointment] = useState(false);
+  const [editAppointment, setEditAppointment] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
+  const editIsClicked = (item) => {
+    setEditAppointment(true);
+    setSelectedRow(item);
+  };
+
+  const closeUpdateAppointment = () => {
+    setEditAppointment(false);
+  };
+  const closeCreateNewAppoinement = () => {
+    setCreateNewAppointment(false);
+  };
+
   console.log("in the homepage.");
   return (
     <>
@@ -43,16 +233,29 @@ const HomePage = () => {
             My Appointments
           </h1>
           <button
-            // onClick={() => setCreateNewPatientModal(true)}
+            onClick={() => setCreateNewAppointment(true)}
             className="text-gray-900 bg-green-400 hover:bg-green-700 hover:text-white rounded-lg text-lg p-5 h-8 ms-auto inline-flex justify-center items-center"
           >
             Create New Appointment
           </button>
         </div>
         <div>
-          <Table data={data} />
+          <Table onEditClicked={editIsClicked} data={data} />
         </div>
       </div>
+      {editAppointment && (
+        <UpdateAppointment
+          data={selectedRow}
+          onClose={closeUpdateAppointment}
+          isOpen={editAppointment}
+        />
+      )}
+      {createNewAppointment && (
+        <CreateNewAppointment
+          isOpen={createNewAppointment}
+          onClose={closeCreateNewAppoinement}
+        />
+      )}
     </>
   );
 };
