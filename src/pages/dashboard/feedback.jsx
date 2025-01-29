@@ -1,8 +1,129 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import React from "react";
-import { Toaster } from "sonner";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useContext, useState } from "react";
+import { toast, Toaster } from "sonner";
 import ExportTable from "../../components/ExportTable";
 import AdminTable from "../../components/AdminTable";
+import { AuthContext } from "../../contexts/auth";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+
+const AddFeedBackFunc = async (data) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/feedback/sendFeedback`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+const AddNewFeedBack = ({ onClose }) => {
+  const { user } = useContext(AuthContext);
+  console.log("Got htererere: ", user?.PatientID);
+  const [feedbackData, setFeedbackData] = useState({
+    patientID: user?.PatientID,
+    date: "",
+    content: "",
+    toWhom: "",
+  });
+
+  const AddNewFeedbackMutation = useMutation({
+    mutationFn: AddFeedBackFunc,
+    onSuccess: () => {
+      toast.success("Successfully added feedback.");
+      onClose();
+    },
+    onError: () => {
+      toast.error("Error while adding feedback.");
+      onClose();
+    },
+  });
+
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setFeedbackData({
+      ...feedbackData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("the feedback: ", feedbackData);
+    AddNewFeedbackMutation.mutate(feedbackData);
+  };
+  return (
+    <Dialog open={true} onClose={onClose} fullWidth maxWidth="md">
+      <DialogTitle sx={{ bgcolor: "#154C79", color: "white" }}>
+        Create New Feedback
+      </DialogTitle>
+      <DialogContent className="mt-16">
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Patient Id"
+              name="pateintId"
+              value={feedbackData.patientID}
+              fullWidth
+              aria-readonly
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Date"
+              name="date"
+              type="date"
+              value={feedbackData.date}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="Content"
+              name="content"
+              value={feedbackData.content}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              label="To Whom"
+              name="toWhom"
+              value={feedbackData.toWhom}
+              fullWidth
+              onChange={changeHandler}
+            />
+          </Grid>
+
+          <DialogActions>
+            <Button onClick={handleSubmit} variant="contained" color="primary">
+              Create
+            </Button>
+            <Button onClick={onClose} variant="outlined" color="secondary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Grid>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const columns = [
   { label: "Feedback ID", field: "feedbackID" },
@@ -20,6 +141,12 @@ const columns = [
 
 const Feedback = () => {
   let data = [];
+  const [feedbackModal, setFeedbackModal] = useState(false);
+
+  const closeFeedbackModal = () => {
+    setFeedbackModal(false);
+  };
+
   return (
     <>
       {/* <div className="mx-10 mt-20">
@@ -66,7 +193,7 @@ const Feedback = () => {
                 <div className="mx-5">
                   <Button
                     variant="outlined"
-                    // onClick={() => setCreateNewAppointment(true)}
+                    onClick={() => setFeedbackModal(true)}
                   >
                     Add My Feedback
                   </Button>
@@ -80,6 +207,7 @@ const Feedback = () => {
             </Grid>
           </Box>
         </Container>
+        {feedbackModal && <AddNewFeedBack onClose={closeFeedbackModal} />}
       </>
     </>
   );
