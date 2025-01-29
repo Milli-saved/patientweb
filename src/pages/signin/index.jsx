@@ -12,14 +12,15 @@ import {
 } from "@mui/material";
 import { RoleBasedViews } from "../view";
 import { AuthContext } from "../../contexts/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
+  const navigate = useNavigate();
   const { setUser, setToken } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [credentials, setCredentials] = useState({
-    userName: "",
+    patientId: "",
     password: "",
   });
 
@@ -37,12 +38,12 @@ const Signin = () => {
     try {
       setLoading(true);
 
-      if (!credentials.userName || !credentials.password) {
+      if (!credentials.patientId || !credentials.password) {
         setError("Please enter username and password");
         return;
       }
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/user/login`,
+        `${import.meta.env.VITE_API_URL}/patient/login`,
         {
           method: "POST",
           headers: {
@@ -51,32 +52,30 @@ const Signin = () => {
           body: JSON.stringify(credentials),
         }
       );
+      const awaitedUser = await response.json();
+      console.log("user infor: ", response.data);
+      console.log("user infor: ", awaitedUser);
 
-      if (response.ok) {
-        const result = await response.json();
+      if (awaitedUser.status) {
+        // const result = await response.json();
         // console.log('JSON response',result);
 
-        window.localStorage.setItem("token", result.data.token);
+        // window.localStorage.setItem("token", result.data.token);
 
-        const roleBasedView = RoleBasedViews[result.data.role];
+        const roleBasedView = RoleBasedViews["patient"];
         if (roleBasedView && roleBasedView.routes) {
           const roles_menu = Object.keys(roleBasedView?.routes)?.map((key) => {
             const { icons, label } = roleBasedView.routes[key];
             return { Icon: icons, label, to: key };
           });
+          console.log("log all data: ", roles_menu);
 
           if (roles_menu?.length > 0) {
-            const user = {
-              fullName: result.data.fullName,
-              email: result.data.email,
-              phoneNumber: result.data.phoneNumber,
-              role: result.data.role,
-              healthCenterId: result.data.healthCenterId,
-              userName: result.data.userName,
-            };
+            const user = awaitedUser.data;
+            console.log("user to set: ", user);
             setUser(user);
             window.localStorage.setItem("user", JSON.stringify(user));
-            setToken(result.data.token);
+            setToken(awaitedUser.data.token);
             navigate(roles_menu[0].to);
           } else {
             setError(
@@ -121,8 +120,8 @@ const Signin = () => {
         <form onSubmit={submitHandler}>
           <TextField
             fullWidth
-            label="User Name"
-            name="userName"
+            label="Patient Id"
+            name="patientId"
             variant="outlined"
             onChange={changeHandler}
             sx={{ mb: 3 }}
@@ -163,8 +162,8 @@ const Signin = () => {
               {error}
             </Typography>
           )}
-          {/* <Button
-            // type="submit"
+          <Button
+            type="submit"
             variant="contained"
             color="primary"
             fullWidth
@@ -172,8 +171,8 @@ const Signin = () => {
             sx={{ py: 1.5 }}
           >
             {loading ? <CircularProgress size={24} /> : "Login"}
-          </Button> */}
-          <Link to="/dashboard">Login</Link>
+          </Button>
+          {/* <Link to="/dashboard">Login</Link> */}
         </form>
         <Typography variant="body2" className="float-end" sx={{ mt: 3 }}>
           Need help?

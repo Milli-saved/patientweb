@@ -68,8 +68,8 @@ const Sidebar = () => {
   //   }
 
   const rolesMenu = useMemo(() => {
-    return Object.keys(RoleBasedViews[user?.role]?.routes).map((key) => {
-      const { icons, label, bool } = RoleBasedViews[user.role].routes[key];
+    return Object.keys(RoleBasedViews["patient"]?.routes).map((key) => {
+      const { icons, label, bool } = RoleBasedViews["patient"].routes[key];
       return { Icon: icons, label, to: key, bool };
     });
   }, [user?.role]);
