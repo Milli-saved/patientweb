@@ -236,16 +236,19 @@ const HomePage = () => {
     <>
       <div className="mx-10 mt-20">
         <Toaster position="top-right" richcolors />
-        <div className="flex justify-center items-center">
+        <div className="flex justify-between items-center">
           <h1 className="m-5 text-5xl font-semibold text-gray-800">
             My Appointments
           </h1>
-          <button
-            onClick={() => setCreateNewAppointment(true)}
-            className="text-gray-900 bg-green-400 hover:bg-green-700 hover:text-white rounded-lg text-lg p-5 h-8 ms-auto inline-flex justify-center items-center"
-          >
-            Create New Appointment
-          </button>
+          <div className="flex justify-end items-end">
+            <Button
+              variant="outlined"
+              onClick={() => setCreateNewAppointment(true)}
+              // className="text-gray-900 bg-green-400 hover:bg-green-700 hover:text-white rounded-lg text-lg p-5 h-8 ms-auto inline-flex justify-center items-center"
+            >
+              Create New Appointment
+            </Button>
+          </div>
         </div>
         <div>
           <Table onEditClicked={editIsClicked} data={data} />

@@ -50,40 +50,27 @@ const Feedback = () => {
             alignItems="center"
             mb={5}
           >
-            <Typography
-              variant="h1"
-              component="h1"
-              fontSize="2.5rem"
-              fontWeight="bold"
-              color="text.primary"
-            >
+            <h1 className="m-5 text-5xl font-semibold text-gray-800">
               Feedbacks
-            </Typography>
+            </h1>
           </Box>
           <Box mb={5}>
             <div className="flex justify-between">
-              <Typography
-                variant="h2"
-                component="h2"
-                fontSize="1.875rem"
-                fontWeight="bold"
-                color="text.primary"
-                mb={2}
-              >
+              <h3 className="m-5 text-5xl font-semibold text-gray-800">
                 My Feedback List
-              </Typography>
+              </h3>
               <div className="flex">
-                <Typography>
+                {/* <Typography>
                   <ExportTable data={data} fileName="Feedback from patient" />
-                </Typography>
-                {/* <div className="mx-5">
+                </Typography> */}
+                <div className="mx-5">
                   <Button
                     variant="outlined"
                     // onClick={() => setCreateNewAppointment(true)}
                   >
                     Add My Feedback
                   </Button>
-                </div> */}
+                </div>
               </div>
             </div>
             <Grid container spacing={3}>

@@ -38,7 +38,7 @@ const MedicalRecords = () => {
     <>
       <div className="mx-10 mt-20">
         <Toaster position="top-right" richcolors />
-        <div className="flex justify-center items-center">
+        <div className="flex justify-start items-center">
           <h1 className="m-5 text-5xl font-semibold text-gray-800">
             My Medial Records
           </h1>
