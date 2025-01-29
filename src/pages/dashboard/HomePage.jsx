@@ -27,6 +27,20 @@ const createAppoinment = async (appointmentData) => {
   }
 };
 
+const updateAppointment = async (data) => {
+  try {
+    const id = data.id;
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/appointment/updateAppointment/${id}`,
+      appointmentData
+    );
+    console.log("the response: ", response);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 const CreateNewAppointment = ({ onClose, isOpen }) => {
   const { user } = useContext(AuthContext);
   console.log("the user: ", user);
@@ -134,8 +148,21 @@ const UpdateAppointment = ({ onClose, isOpen, data }) => {
     });
   };
 
+  const updateAppointmentMutation = useMutation({
+    mutationFn: updateAppointment,
+    onSuccess: () => {
+      toast.success("update successful");
+      onClose();
+    },
+    onError: () => {
+      toast.error("Error while updatind appointment.");
+      onClose();
+    },
+  });
+
   const handleUpdate = () => {
-    console.log("update");
+    console.log("update", appointmentData);
+    updateAppointmentMutation.mutate(appointmentData);
   };
 
   return (

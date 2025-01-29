@@ -56,7 +56,7 @@ const MedicalRecords = () => {
       queryKey: ["medicalRecords", id],
       queryFn: () => fetchMedicalRecords(id),
     });
-  console.log("in the MedicalRecords.", medicalRecordData.data);
+  console.log("in the MedicalRecords.", medicalRecordData?.data);
   return (
     <>
       <div className="mx-10 mt-20">

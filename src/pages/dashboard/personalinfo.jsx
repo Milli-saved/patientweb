@@ -15,15 +15,8 @@ import { AuthContext } from "../../contexts/auth";
 import SnackBarShow from "../../components/SnackBarShow";
 
 const PersonalInfo = () => {
-  const [formData, setFormData] = useState({
-    userName: "",
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    department: "",
-    role: "",
-    healthCenterId: "",
-  });
+  const { user } = useContext(AuthContext);
+  const [formData, setFormData] = useState(user);
   const [newPassword, setNewPassword] = useState({
     confirmPassword: "",
     oldPassword: "",
@@ -31,7 +24,6 @@ const PersonalInfo = () => {
   });
   const [message, setMessage] = useState("");
   const [error, setError] = useState(false);
-  const { user } = useContext(AuthContext);
   // Function to fetch current user data from the API
   // const fetchUserData = async () => {
   //   try {
@@ -120,8 +112,8 @@ const PersonalInfo = () => {
           {/* User Name */}
           <Grid item xs={12} md={4}>
             <TextField
-              label="User Name"
-              value={formData.userName}
+              label="Patient ID"
+              value={formData.PatientID}
               fullWidth
               InputProps={{ readOnly: true }}
             />
@@ -141,7 +133,7 @@ const PersonalInfo = () => {
           <Grid item xs={12} md={4}>
             <TextField
               label="Email"
-              value={formData.email}
+              value={formData.Email}
               fullWidth
               InputProps={{ readOnly: true }}
             />
@@ -162,8 +154,8 @@ const PersonalInfo = () => {
           {/* Department */}
           <Grid item xs={12} md={4}>
             <TextField
-              label="Department"
-              value={formData.department}
+              label="Gender"
+              value={formData.Gender}
               fullWidth
               InputProps={{ readOnly: true }}
             />
@@ -172,8 +164,16 @@ const PersonalInfo = () => {
           {/* Role */}
           <Grid item xs={12} md={4}>
             <TextField
-              label="Role"
-              value={formData.role}
+              label="City"
+              value={formData.City}
+              fullWidth
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              label="Date Of Birth"
+              value={formData.DateOfBirth}
               fullWidth
               InputProps={{ readOnly: true }}
             />
@@ -186,6 +186,33 @@ const PersonalInfo = () => {
             <TextField
               label="Health Center ID"
               value={formData.healthCenterId}
+              fullWidth
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+        </Grid>
+        <Typography>Additional Information</Typography>
+        <Grid container spacing={3} mt={2}>
+          <Grid item xs={12} md={4}>
+            <TextField
+              label="Emergency Contact"
+              value={formData.EmergencyContact}
+              fullWidth
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              label="House Number"
+              value={formData.houseNumber}
+              fullWidth
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TextField
+              label="Sub City"
+              value={formData.subCity}
               fullWidth
               InputProps={{ readOnly: true }}
             />
