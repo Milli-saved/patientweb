@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import { Toaster } from "sonner";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../contexts/auth";
+import { toast, Toaster } from "sonner";
 import Table from "../../components/Table";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Button,
   Dialog,
@@ -13,13 +14,29 @@ import {
   TextField,
 } from "@mui/material";
 
+const createAppoinment = async (appointmentData) => {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/appointment/createAppointment`,
+      appointmentData
+    );
+    console.log("the response: ", response);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 const CreateNewAppointment = ({ onClose, isOpen }) => {
+  const { user } = useContext(AuthContext);
+  console.log("the user: ", user);
   const [appointmentData, setAppointmentData] = useState({
-    patientId: "",
+    patientId: user?.PatientID,
     createdBy: "",
     appointmentDate: "",
     reason: "",
-    status: "",
+    status: "scheduled",
+    createdAt: new Date(),
   });
 
   const changeHandler = (e) => {
@@ -30,8 +47,22 @@ const CreateNewAppointment = ({ onClose, isOpen }) => {
     });
   };
 
-  const handleSubmit = () => {
-    console.log("submitted");
+  const createAppointmentMutation = useMutation({
+    mutationFn: createAppoinment,
+    onSuccess: () => {
+      toast.success("Created Appointment Successfully");
+      onClose();
+    },
+    onError: () => {
+      toast.error("Error while creating Appointment.");
+      onClose();
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submitted", appointmentData);
+    createAppointmentMutation.mutate(appointmentData);
   };
 
   return (
