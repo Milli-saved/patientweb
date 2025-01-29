@@ -14,7 +14,13 @@ import {
 } from "@mui/material";
 
 const CreateNewAppointment = ({ onClose, isOpen }) => {
-  const [appointmentData, setAppointmentData] = useState();
+  const [appointmentData, setAppointmentData] = useState({
+    patientId: "",
+    createdBy: "",
+    appointmentDate: "",
+    reason: "",
+    status: "",
+  });
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -33,45 +39,46 @@ const CreateNewAppointment = ({ onClose, isOpen }) => {
       <DialogTitle sx={{ bgcolor: "#154C79", color: "white" }}>
         Create New Appointment
       </DialogTitle>
-      <DialogContent className="mt-10">
+      <DialogContent className="mt-16">
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
-              label="Full Name"
-              name="fullName"
-              // value={patientInfo.fullName}
+              label="Patient Id"
+              name="pateintId"
+              value={appointmentData.patientId}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              label="Age"
-              name="age"
-              // value={patientInfo.fullName}
+              label="Created by"
+              name="createdBy"
+              value={appointmentData.createdBy}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              label="Age"
-              name="age"
-              // value={patientInfo.fullName}
+              label="Reason"
+              name="reason"
+              value={appointmentData.reason}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              // label="Full Name"
+              label="Appointment Date"
               type="date"
-              name="fullName"
-              // value={patientInfo.fullName}
+              name="appointmentDate"
+              value={appointmentData.appointmentDate}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
+
           <DialogActions>
             <Button onClick={handleSubmit} variant="contained" color="primary">
               Create
@@ -105,45 +112,46 @@ const UpdateAppointment = ({ onClose, isOpen, data }) => {
       <DialogTitle sx={{ bgcolor: "#154C79", color: "white" }}>
         Update Appointment
       </DialogTitle>
-      <DialogContent className="mt-10">
+      <DialogContent className="mt-16">
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
             <TextField
-              label="Full Name"
-              name="fullName"
-              // value={patientInfo.fullName}
+              label="Patient Id"
+              name="pateintId"
+              value={appointmentData.patientId}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              label="Full Name"
-              name="fullName"
-              // value={patientInfo.fullName}
+              label="Created by"
+              name="createdBy"
+              value={appointmentData.createdBy}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              label="Full Name"
-              name="fullName"
-              // value={patientInfo.fullName}
+              label="Reason"
+              name="reason"
+              value={appointmentData.reason}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              // label="Full Name"
+              label="Appointment Date"
               type="date"
-              name="fullName"
-              // value={patientInfo.fullName}
+              name="appointmentDate"
+              value={appointmentData.appointmentDate}
               fullWidth
               onChange={changeHandler}
             />
           </Grid>
+
           <DialogActions>
             <Button onClick={handleUpdate} variant="contained" color="primary">
               Update

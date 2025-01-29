@@ -47,6 +47,8 @@ function AuthenticatedRoutes() {
     <Routes>
       <Route path="/dashboard" element={<ProtectedRoute />} />
       <Route path="/medical-record" element={<ProtectedRoute />} />
+      <Route path="/feedback" element={<ProtectedRoute />} />
+      <Route path="/personalinfo" element={<ProtectedRoute />} />
     </Routes>
   );
 }
