@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       navigate("/signin");
     }
-  }, [token]);
+  }, []);
 
   return (
     <AuthContext.Provider
